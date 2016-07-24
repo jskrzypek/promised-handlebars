@@ -30,6 +30,9 @@ Handlebars.registerHelper({
       return 'h(' + value + ')'
     })
   },
+  'stringifyRoot': function (options) {
+    return JSON.stringify(options.data.root)
+  },
   'helper-hash': function (options) {
     var hashString = Object.keys(options.hash).sort().map(function (key) {
       return key + '=' + options.hash[key]
@@ -53,6 +56,9 @@ Handlebars.registerHelper({
       .then(function (result) {
         return 'bi(' + result + ')'
       })
+  },
+  'block-context': function (options) {
+    return Q(options.fn(this))
   },
   'insert-twice': function (options) {
     return options.fn(this) + ',' + options.fn(this)
@@ -80,6 +86,7 @@ Handlebars.registerHelper('trim', function (options) {
 Handlebars.registerPartial('a', "{{helper '10' 'partialA'}}")
 Handlebars.registerPartial('b', "{{helper '10' 'partialB'}}")
 Handlebars.registerPartial('identity', 'id({{.}})')
+Handlebars.registerPartial('call', '{{{stringifyRoot}}}')
 
 describe('promised-handlebars:', function () {
   it('should return a promise for the ouput with helpers resolved', function (done) {
@@ -138,6 +145,15 @@ describe('promised-handlebars:', function () {
       .notify(done)
   })
 
+  it('partials calls should maintain the correct `root`-variable when a parameter is passed', function (done) {
+    var template = Handlebars.compile('{{>call a}}')
+    return expect(template({
+      a: 3
+    }))
+      .to.eventually.equal('{"a":3}')
+      .notify(done)
+  })
+
   it('helpers passed into partials as parameters like {{>partial (helper 123)}} should be resolved within the helper call', function (done) {
     var template = Handlebars.compile(fixture('helper-as-parameter-for-partial.hbs'))
     return expect(template({}))
@@ -168,6 +184,12 @@ describe('promised-handlebars:', function () {
     var template = Handlebars.compile(fixture('block-helper-manipulate.hbs'))
     return expect(template({arr: [{a: 'aa'}, {a: 'bb'}]}))
       .to.eventually.equal('abc')
+      .notify(done)
+  })
+  it('async helpers should work inside an async block-helper that passes (this) to the block-function', function (done) {
+    var template = Handlebars.compile(fixture('async-block-helper-with-nested-async-helper.hbs'))
+    return expect(template({a: 'b'}))
+      .to.eventually.equal('h(a)')
       .notify(done)
   })
 })

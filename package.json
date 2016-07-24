@@ -1,6 +1,6 @@
 {
   "name": "promised-handlebars",
-  "version": "1.0.3",
+  "version": "1.0.6",
   "description": "Wrapper for Handlebars that allows helpers returning promises",
   "repository": {
     "type": "git",
@@ -19,15 +19,16 @@
   "scripts": {
     "pretest": "standard --version || npm -g install standard",
     "test": "mocha && standard",
-    "preformat": "standard --version || npm -g install standard",
-    "format": "standard --format",
+    "preformat": "standard-format --version || npm -g install standard-format",
+    "format": "standard-format -w",
     "thought": "thought run -a",
     "prethoughtcheck": "thought --version || npm -g install thought",
     "thoughtcheck": "thought check-engines",
-    "version": "npm run thought",
+    "version": "thoughtful changelog -o -a && npm run thought",
     "preversion": "npm run thoughtcheck"
   },
   "dependencies": {
+    "deep-aplus": "^1.0.2",
     "q": "^1.4.1"
   },
   "standard": {
@@ -35,21 +36,26 @@
       "spec/fixtures/**"
     ]
   },
-  "keywords": [],
+  "keywords": [
+    "handlebars",
+    "async",
+    "helpers",
+    "promise",
+    "q"
+  ],
+  "files": [
+    "index.js"
+  ],
   "devDependencies": {
     "chai": "^3.2.0",
     "chai-as-promised": "^5.1.0",
     "get-promise": "^1.4.0",
     "handlebars": "^3||^4",
     "mocha": "^2.2.5",
-    "q-io": "^1.13.1"
+    "q-io": "^1.13.1",
+    "thoughtful-release": "^0.3.0"
   },
   "peerDependencies": {
     "handlebars": "3||4"
-  },
-  "config": {
-    "ghooks": {
-      "pre-commit": "thoughtful precommit && standard --format"
-    }
   }
 }
