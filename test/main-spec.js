@@ -22,7 +22,7 @@ var expect = chai.expect
 
 // Handlebars-Setup
 var promisedHandlebars = require('../')
-var Handlebars = promisedHandlebars(require('handlebars'))
+var Handlebars = promisedHandlebars(require('handlebars'), {Promise: Q.Promise})
 
 Handlebars.registerHelper({
   'helper': function (delay, value) {
