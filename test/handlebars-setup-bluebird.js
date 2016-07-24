@@ -8,7 +8,6 @@
 'use strict'
 
 var Bluebird = require('bluebird')
-var access = require('fs').access
 
 module.exports = setupHandlebars
 
@@ -86,7 +85,7 @@ function setupHandlebars () {
 
 function promisedExists (file) {
   return new Bluebird(function (resolve, reject) {
-    access(file, function (err, result) {
+    require('fs').stat(file, function (err, result) {
       if (err) {
         resolve(false)
       }

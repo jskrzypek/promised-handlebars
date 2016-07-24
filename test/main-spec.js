@@ -19,10 +19,10 @@ chai.use(chaiAsPromised)
 var expect = chai.expect
 
 describe('promised-handlebars:', function () {
-  if (Number.parseInt(process.version[1]) === 0) {
+  if (parseInt(process.version[1]) === 0) {
     describe('with no global.Promise', function () {
-      it('should throw', function (done) {
-        return expect(require('./handlebars-setup-global')).to.throw()
+      it('should throw', function () {
+        return expect(require('../')).to.throw()
       })
     })
   } else {
