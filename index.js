@@ -193,9 +193,7 @@ Markers.prototype.asMarker = function asMarker (promise) {
   // The placeholder: "prefix" for identification, index of promise in the store for retrieval, '>' for escaping
   var placeholder = this.prefix + this.promiseStore.length + '>'
   // Create a new promise, don't modify the input
-  var result = new Promise(function (resolve, reject) {
-    promise.done(resolve, reject)
-  })
+  var result = Promise.resolve(promise)
   result.toString = function () {
     return placeholder
   }
